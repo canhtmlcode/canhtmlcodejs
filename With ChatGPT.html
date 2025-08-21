@@ -1,0 +1,95 @@
+,<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>WhatsApp Dosya Şakası</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 50px;
+    background: #e5ddd5;
+  }
+  #indirBtn {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: #25d366;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #indirBtn:hover {
+    background: #128c7e;
+  }
+  #mesaj {
+    margin-top: 30px;
+    font-size: 24px;
+    color: darkgreen;
+  }
+  .dosya {
+    display: none;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>WhatsApp Dosya İndirme Sayfası</h1>
+<p>Dosyayı indirmek için butona tıklayın:</p>
+<button id="indirBtn">Dosyayı İndir</button>
+
+<div id="mesaj"></div>
+<div id="dosyalar"></div>
+
+<script>
+let devam = false;
+
+document.getElementById("indirBtn").addEventListener("click", () => {
+  // Dosya indirme
+  const metin = "Vay seni kaplumbağa 🐢";
+  const blob = new Blob([metin], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "Kaplumbaga.txt";
+  link.click();
+  URL.revokeObjectURL(link.href);
+
+  // Şaka efekti başlat
+  document.getElementById("mesaj").innerText = "📄 Dosya açıldı: Vay seni kaplumbağa 🐢";
+  devam = true;
+  popupLoop();
+});
+
+// Home tuşuna basınca her şeyi durdur
+document.addEventListener("keydown", (e) => {
+  if(e.key === "Home") {
+    devam = false;
+    document.getElementById("mesaj").innerText = "Şaka durdu, her şey güvenli 😎";
+    document.getElementById("dosyalar").innerHTML = "";
+  }
+});
+
+function popupLoop() {
+  if(!devam) return;
+
+  const container = document.getElementById("dosyalar");
+  container.innerHTML = "";
+
+  for(let i=0; i<100; i++){
+    let div = document.createElement("div");
+    div.className = "dosya";
+    div.innerText = "📄 Metin belgesi açıldı: Vay seni kaplumbağa 🐢";
+    container.appendChild(div);
+    div.style.display = "block";
+  }
+
+  // 5 saniye bekle ve tekrar döngü
+  setTimeout(() => {
+    if(devam) popupLoop();
+  }, 5000);
+}
+</script>
+
+</body>
+</html>
